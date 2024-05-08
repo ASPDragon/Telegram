@@ -10,7 +10,7 @@ type AuthContext = {
 
 const AuthContext = createContext<AuthContext>({
     session: null,
-    container: null,
+    user: null,
     profile: null,
 });
 
@@ -47,7 +47,7 @@ export default function AuthProvider({children}: PropsWithChildren) {
     }, [session?.user]);
 
     return (
-        <AuthContext.Provider value={{ session, container: session?.user, profile }}>
+        <AuthContext.Provider value={{ session, user: session?.user, profile }}>
             {children}
         </AuthContext.Provider>
     );

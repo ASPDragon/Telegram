@@ -1,11 +1,30 @@
-import {View, Text, StyleSheet} from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
+import {useChatContext} from "stream-chat-expo";
+import {useAuth} from "../providers/AuthProvider";
+import { router } from "expo-router";
 
 const UserListItem = ({ user }) => {
+        const { client } = useChatContext();
+        const { user: me } = useAuth();
+
+        const onPress = async () => {
+            // Start chat with user
+            const channel = client.channel('messaging', {
+                members: [me.id, user.id],
+            });
+
+            await channel.watch();
+            router.replace(`/(home)/channel/${channel.cid}`);
+        };
+
     return (
-        <View style={styles.container}>
+        <Pressable
+            onPress={onPress}
+            style={styles.container}
+        >
             <Text style={styles.text}>{user.full_name}</Text>
-        </View>
+        </Pressable>
     );
 };
 
